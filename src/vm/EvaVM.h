@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "../bytecode/OpCode.h"
+#include "../logger/Logger.h"
 
 /** Reads the current byte in bytecode and advnaces ip */
 #define READ_BYTE() *ip++
@@ -44,9 +45,12 @@ public:
      */
     void eval() {
         for (;;) {
-            switch (READ_BYTE()) {
+            auto opcode = READ_BYTE();
+            switch (opcode) {
                 case OP_HALT:
                     return;
+                default:
+                    DIE << "Unknown opcode: " << std::hex << opcode;
             }
         }
     }
